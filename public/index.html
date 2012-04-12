@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>Hello World</title>
+        <meta name="description" content="">
+        <meta name="author" content="">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <!-- Le HTML5 shim, for IE6-8 support of HTML elements -->
+        <!--[if lt IE 9]>
+        <script src="http://html5shim.googlecode.com/svn/trunk/html5.js"></script>
+        <![endif]-->
+
+        <!-- Le styles -->
+        <link href="css/bootstrap.css" rel="stylesheet">
+        <style>
+            body {
+                padding-top: 60px; /* 60px to make the container go all the way to the bottom of the topbar */
+            }
+        </style>
+        <link href="css/bootstrap-responsive.css" rel="stylesheet">
+
+        <!-- Le fav and touch icons -->
+        <link rel="shortcut icon" href="images/favicon.ico">
+        <link rel="apple-touch-icon" href="images/apple-touch-icon.png">
+
+        <link rel="apple-touch-icon" sizes="72x72" href="images/apple-touch-icon-72x72.png">
+        <link rel="apple-touch-icon" sizes="114x114" href="images/apple-touch-icon-114x114.png">
+
+        <script type="text/x-handlebars" data-template-name="welcome-home">
+            Welcome to your new Gor.js project :)
+        </script>
+<script type="text/x-handlebars" data-template-name="templates-mainmenu">
+{{#view MyApp.UnicornsMenuItem tagName="li"}}
+<a href="#" {{action "select"}}>Unicorns</a>
+{{/view}}
+</script>
+<script type="text/x-handlebars" data-template-name="unicorns-form">
+<div class="modal" id="unicorn-dialog">
+    <div class="modal-header">
+        <a class="close" data-dismiss="modal" {{action "close"}}>×</a>
+        <h3>Unicorn Form</h3>
+    </div>
+    <div class="modal-body">
+        {{#if isErroneous }}
+        <div class="alert alert-error">
+            <a class="close" data-dismiss="alert">&times;</a>
+            <strong>Oh snap!</strong> Change a few things up and try submitting again.
+        </div>
+        {{/if}}
+        {{#if isFailed }}
+        <div class="alert alert-error">
+            <strong>Oh snap!</strong> Failed saving data.
+        </div>
+        {{/if}}
+        <form class="form-horizontal">
+            <fieldset {{bindAttr class="isStringValid:error"}}>
+                <div class="control-group" {{bindAttr class="isStringError:error"}}>
+                    <label class="control-label" for="input01">String Field</label>
+                    <div class="controls">
+                        {{view Ember.TextField id="input01" 
+                            valueBinding="item.stringAttr" 
+                            classNames="input-xlarge"}}
+                        {{#if isStringError}}
+                        <p class="help-block">Excellent, now you have an error! 
+                        Checkout the view code..</p>
+                        {{else}}
+                        <p class="help-block">This also demonstrates field verification. 
+                        Try typing "test"..</p>
+                        {{/if}}
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="select01">Reference Field</label>
+                    <div class="controls">
+                        {{view Ember.Select id="select01" 
+                            contentBinding="MyApp.unicornSelectController"
+                            selectionBinding="item.referenceAttr"
+                            optionLabelPath="content.label"
+                            optionValuePath="content.id"
+                            prompt="Pick an option:"}}
+                        <p class="help-block">
+                        This demonstrates fetching options from another controller.
+                        </p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="input02">Integer Field</label>
+                    <div class="controls">
+                        {{view Ember.TextField id="input02"
+                            valueBinding="item.integerAttr" 
+                            classNames="input-xlarge"}}
+                        <p class="help-block">Just another field so the form looks "richer" ;)</p>
+                    </div>
+                </div>
+                <div class="control-group">
+                    <label class="control-label" for="checkbox01">Boolean Field</label>
+                    <div class="controls">
+                        <label class="checkbox">
+                            {{view Ember.Checkbox id="checkbox01" valueBinding="item.booleanAttr"}}
+                            Ember also has a checkbox control, yey.. 
+                        </label>
+                    </div>
+                </div>
+            </fieldset>
+        </form>
+    </div>
+    <div class="modal-footer">
+        <a href="#" class="btn btn-primary" 
+            {{bindAttr class="isErroneous:disabled"}} 
+            {{action "submit"}}>Save changes</a>
+        <a href="#" class="btn" {{action "close"}}>Close</a>
+    </div>
+</div>
+
+</script>
+<script type="text/x-handlebars" data-template-name="unicorns-item">
+<td> 
+{{view Ember.Checkbox classNames="unicorn-checkbox" valueBinding="item.isSelected" }} 
+</td>
+<td>
+{{item.stringAttr }} 
+</td> 
+<td>
+{{item.referenceAttr.label }} 
+</td> 
+<td>
+{{item.integerAttr }} 
+</td> 
+<td>
+{{item.booleanAttr }} 
+</td> 
+<td>
+{{#view Ember.Button classNames="btn" action="edit" target="parentView"}}
+Edit
+{{/view}} 
+<td>
+
+</script>
+<script type="text/x-handlebars" data-template-name="unicorns-list">
+<div >
+    <h1>Unicorns <small>(Lorem ipsum dolor sit amet)</small></h1>
+
+    <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit, 
+    sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. 
+    Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi 
+    ut aliquip ex ea commodo consequat. Duis aute irure dolor in 
+    reprehenderit in voluptate velit esse cillum dolore eu fugiat 
+    nulla pariatur. Excepteur sint occaecat cupidatat non proident, 
+    sunt in culpa qui officia deserunt mollit anim id est laborum.</p>
+
+    {{view MyApp.UnicornToolbar}}
+
+    <table class="table">
+        <thead>
+            <tr> 
+                <th> {{view Ember.Checkbox valueBinding="selectAll"}} </th>
+                <th> String </th>
+                <th> Reference </th>
+                <th> Integer </th> 
+                <th> Boolean </th> 
+                <th> </th> 
+            </tr>
+        </thead>
+        {{#each MyApp.unicornsController tagName="tbody"}}
+        {{view MyApp.UnicornItem tagName="tr" itemBinding="this"}}
+        {{/each}}
+    </table>
+</div>
+
+
+</script>
+<script type="text/x-handlebars" data-template-name="unicorns-toolbar">
+<div>
+{{#view Ember.Button 
+    target="parentView" 
+    action="newUnicorn" 
+    classNames="btn btn-primary"
+    }} 
+    <i class="icon-plus icon-white"></i>
+    New 
+{{/view}}
+
+{{#view Ember.Button 
+    target="parentView" action="delUnicorn" 
+    classNames="btn btn-danger"
+    disabledBinding="MyApp.unicornsController.hasSelected"
+    }} 
+    <i class="icon-remove icon-white"></i>
+    Delete
+{{/view}}
+
+{{#view Ember.TextField
+    classNames="search-query" 
+    valueBinding="searchQuery" 
+    placeholder="search..."}}
+{{/view}}
+</div>
+
+</script>
+
+    </head>
+
+    <body>
+        <div class="navbar navbar-fixed-top">
+            <div class="navbar-inner">
+                <div class="container">
+                    <a class="btn btn-navbar" data-toggle="collapse" data-target=".nav-collapse">
+
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </a>
+                    <script type="text/x-handlebars">
+                        <a class="brand" href="#" {{action "home" target="MyApp.stateManager"}}>Hello World</a>
+                    </script>
+                    <div class="nav-collapse">
+                            <script type="text/x-handlebars">
+                                    {{view MyApp.MainMenu }}
+                            </script>
+                        </div><!--/.nav-collapse -->
+                    </div>
+                </div>
+            </div>
+            <div class="container-fluid">
+                <div id="content" class="row-fluid">
+                </div>
+            </div> <!-- /container -->
+
+            <!-- Le javascript
+            ================================================== -->
+
+            <!-- Placed at the end of the document so the pages load faster -->
+            <script src="js/jquery.min.js"></script>
+            <script src="js/bootstrap.js"></script>
+            <script src="js/ember.min.js"></script>
+            <script src="js/app.js"></script>
+            <script>
+            </script>
+        </body>
+    </html>

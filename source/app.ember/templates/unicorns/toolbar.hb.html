@@ -1,0 +1,26 @@
+<div>
+{{#view Ember.Button 
+    target="parentView" 
+    action="newUnicorn" 
+    classNames="btn btn-primary"
+    }} 
+    <i class="icon-plus icon-white"></i>
+    New 
+{{/view}}
+
+{{#view Ember.Button 
+    target="parentView" action="delUnicorn" 
+    classNames="btn btn-danger"
+    disabledBinding="MyApp.unicornsController.hasSelected"
+    }} 
+    <i class="icon-remove icon-white"></i>
+    Delete
+{{/view}}
+
+{{#view Ember.TextField
+    classNames="search-query" 
+    valueBinding="searchQuery" 
+    placeholder="search..."}}
+{{/view}}
+</div>
+
